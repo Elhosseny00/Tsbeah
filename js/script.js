@@ -295,7 +295,7 @@ if (!userId) {
 }
 
 /* ===============================
-   ✅ تحميل العداد فقط
+   ✅ تحميل البيانات من LocalStorage
 =================================*/
 
 if (localStorage.getItem("count")) {
@@ -328,21 +328,25 @@ tasbeehSelect.addEventListener("change", () => {
 });
 
 /* ===============================
-   ✅ رسائل كل 10 تسبيحات
+   ✅ رسالة تشجيع ديناميك
 =================================*/
 
-const tenMessages = [
-  "ما شاء الله! وصلت 10 تسبيحات 🌸",
-  "ما شاء الله! 20 تسبيحة 💫",
-  "سبحان الله! 30 تسبيحة ✨",
-  "استمر! 40 تسبيحة 🙏",
-  "تبارك الله! 50 تسبيحة 🌷",
-  "ما شاء الله! 60 تسبيحة 🌼",
-  "ما شاء الله! 70 تسبيحة 🌺",
-  "أحسنت! 80 تسبيحة 🌹",
-  "سبحان الله! 90 تسبيحة 🌟",
-  "تهانينا! وصلت 100 تسبيحة 🎉",
-];
+function getEncouragementMessage(currentCount) {
+  const phrases = [
+    "ما شاء الله",
+    "أحسنت",
+    "استمر",
+    "تبارك الله",
+    "زادك الله حرصًا",
+    "كتب الله أجرك",
+    "نور الله قلبك",
+  ];
+
+  const randomPhrase =
+    phrases[Math.floor(Math.random() * phrases.length)];
+
+  return `${randomPhrase}! وصلت ${currentCount} تسبيحة 🌸`;
+}
 
 /* ===============================
    ✅ زر التسبيح
@@ -361,8 +365,28 @@ countBtn.addEventListener("click", () => {
   localStorage.setItem("count", count);
 
   if (count % 10 === 0) {
-    const index = Math.min(Math.floor(count / 10) - 1, tenMessages.length - 1);
-    showMessage(tenMessages[index]);
+    showMessage(getEncouragementMessage(count));
+
+    // اهتزاز الموبايل
+    if (navigator.vibrate) {
+      if (count % 100 === 0) {
+        navigator.vibrate([200, 100, 200]); // أقوى كل 100
+      } else {
+        navigator.vibrate(200);
+      }
+    }
+
+    // اهتزاز بصري
+    counterElement.classList.add("shake");
+
+    setTimeout(() => {
+      counterElement.classList.remove("shake");
+    }, 400);
+  }
+
+  // رسالة مميزة كل 100
+  if (count % 100 === 0) {
+    showMessage(`🎉 ما شاء الله! وصلت ${count} تسبيحة كاملة! 🎉`);
   }
 });
 
@@ -394,7 +418,6 @@ finishBtn.addEventListener("click", () => {
     return;
   }
 
-  // Loader
   const loader = document.createElement("div");
   loader.innerText = "جاري حفظ البيانات...";
   loader.style.position = "fixed";
@@ -408,7 +431,6 @@ finishBtn.addEventListener("click", () => {
   loader.style.zIndex = "9999";
   document.body.appendChild(loader);
 
-  // إرسال البيانات
   const form = document.createElement("form");
   form.method = "POST";
   form.action =
