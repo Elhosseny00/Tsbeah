@@ -1,10 +1,5 @@
-/* ===== Reset ===== */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
+/* Reset & Font */
+* { margin: 0; padding: 0; box-sizing: border-box; }
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
 
 body {
@@ -21,42 +16,27 @@ body {
 .container {
   width: 100%;
   max-width: 450px;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255,255,255,0.08);
   backdrop-filter: blur(15px);
   border-radius: 25px;
   padding: 30px;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.4);
   text-align: center;
 }
 
-h1 {
-  font-size: 22px;
-  line-height: 1.9;
-  margin-bottom: 25px;
-  color: #f1f5f9;
-}
+h1 { font-size: 22px; line-height: 1.9; margin-bottom: 25px; color: #f1f5f9; }
 
-.form-group {
-  margin-bottom: 15px;
-  text-align: right;
-}
+.form-group { margin-bottom: 15px; text-align: right; }
+label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 14px; }
 
-label {
-  display: block;
-  margin-bottom: 6px;
-  font-weight: 600;
-  font-size: 14px;
-}
-
-input,
-select {
+input, select {
   width: 100%;
   padding: 10px;
   border-radius: 12px;
   border: none;
   outline: none;
   font-size: 14px;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255,255,255,0.9);
   color: #0f172a;
   font-weight: 600;
   cursor: pointer;
@@ -71,16 +51,14 @@ select {
   background-size: 18px;
 }
 
-input:focus,
-select:focus {
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.3);
+input:focus, select:focus {
+  box-shadow: 0 0 0 4px rgba(59, 130, 246,0.3);
   border: 2px solid #38bdf8;
 }
 
 #virtueBox {
   min-height: 60px;
-  margin-top: 10px;
-  margin-bottom: 20px;
+  margin: 10px 0 20px 0;
   padding: 14px;
   border-radius: 18px;
   background: linear-gradient(135deg, rgba(56,189,248,0.2), rgba(99,102,241,0.2));
@@ -97,7 +75,7 @@ select:focus {
   font-weight: 700;
   margin: 20px 0;
   color: #38bdf8;
-  text-shadow: 0 0 20px rgba(56, 189, 248, 0.6);
+  text-shadow: 0 0 20px rgba(56,189,248,0.6);
 }
 
 button {
@@ -120,13 +98,13 @@ button {
 #resetBtn { background: #ef4444; color: white; }
 #resetBtn:hover { background: #dc2626; transform: scale(1.07); }
 
-/* ===== Message Box ===== */
+/* رسالة ممتعة */
 .message-box {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) scale(0.5);
-  background: rgba(59, 130, 246, 0.9);
+  background: rgba(59,130,246,0.9);
   color: #fff;
   font-size: 18px;
   font-weight: 700;
@@ -139,7 +117,7 @@ button {
   transition: all 0.5s ease;
 }
 
-@media (max-width: 480px) {
+@media (max-width:480px) {
   #counter { font-size: 48px; }
   button { width: 100%; margin-top: 8px; }
 }
