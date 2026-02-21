@@ -35,20 +35,29 @@
   </head>
 
   <body>
+    <iframe name="hidden_iframe" style="display: none"></iframe>
 
     <div class="container">
-      <h1>﴿ الَّذِينَ آمَنُوا وَتَطْمَئِنُّ قُلُوبُهُم بِذِكْرِ اللَّهِ ۗ أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ﴾</h1>
-    
+      <div class="logo-container">
+        <img src="logo.jpeg" alt="Logo" />
+      </div>
+      <h1>
+        ﴿ الَّذِينَ آمَنُوا وَتَطْمَئِنُّ قُلُوبُهُم بِذِكْرِ اللَّهِ ۗ أَلَا
+        بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ﴾
+      </h1>
+
       <div class="form-group">
         <label>اسم المسبح</label>
-        <input type="text" id="name" placeholder="ادخل اسمك" />
+        <input type="text" id="name" placeholder="ادخل اسمك الثلاثي" />
       </div>
-    
+
       <div class="form-group">
-        <label>كلمة التسبيح</label>
+        <label>اختر كلمه التسبيح</label>
         <select id="tasbeeh">
           <option value="">اختر الذكر</option>
-          <option value="سبحان الله وبحمده، سبحان الله العظيم">سبحان الله وبحمده، سبحان الله العظيم</option>
+          <option value="سبحان الله وبحمده، سبحان الله العظيم">
+            سبحان الله وبحمده، سبحان الله العظيم
+          </option>
           <option value="الحمد لله">الحمد لله</option>
           <option value="الله أكبر">الله أكبر</option>
           <option value="لا إله إلا الله">لا إله إلا الله</option>
@@ -56,19 +65,19 @@
           <option value="اللهم صلِّ على محمد">اللهم صلِّ على محمد ﷺ</option>
         </select>
       </div>
-    
+
       <div id="virtueBox"></div>
       <div><h2 id="counter">0</h2></div>
-    
+
       <div class="buttons">
         <button id="countBtn">تسبيح</button>
         <button id="finishBtn">إنهاء التسبيح</button>
         <button id="resetBtn">تصفير</button>
       </div>
     </div>
-    
+
     <div id="loader" class="loader">جاري حفظ البيانات...</div>
-    
+
     <script src="js/script.js"></script>
-    </body>
+  </body>
 </html>
