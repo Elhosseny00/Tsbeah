@@ -71,7 +71,7 @@ finishBtn.addEventListener("click", ()=>{
   // إرسال للـ Google Sheet باستخدام form workaround لتجنب CORS
   const form = document.createElement("form");
   form.method = "POST";
-  form.action = "https://script.google.com/macros/s/AKfycbw3sx2h6TldqvJVhsyg5RQwfIRUWZ27B57U3o0bz55bUGwJ-bU4dgDZIpqfg4-qHU9d/exec";
+  form.action = "https://script.google.com/macros/s/AKfycbza4UDqFxRw_qUOHk1wUWJKWEByxnsa2hlBgbzcv3Iuz9_HPteahEUWNr6rzx2Mz-x2/exec";
   form.target = "hidden_iframe";
 
   const inputName = document.createElement("input");
