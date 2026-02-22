@@ -307,6 +307,18 @@ if (localStorage.getItem("tasbeeh")) {
   tasbeehSelect.value = localStorage.getItem("tasbeeh");
 }
 
+if (localStorage.getItem("name")) {
+  nameInput.value = localStorage.getItem("name");
+}
+
+/* ===============================
+   ✅ حفظ الاسم تلقائيًا
+=================================*/
+
+nameInput.addEventListener("input", () => {
+  localStorage.setItem("name", nameInput.value.trim());
+});
+
 /* ===============================
    ✅ الفضائل
 =================================*/
@@ -364,19 +376,10 @@ countBtn.addEventListener("click", () => {
   counterElement.innerText = count;
   localStorage.setItem("count", count);
 
+  // 🔹 كل 10 → رسالة + اهتزاز بصري
   if (count % 10 === 0) {
     showMessage(getEncouragementMessage(count));
 
-    // اهتزاز الموبايل
-    if (navigator.vibrate) {
-      if (count % 100 === 0) {
-        navigator.vibrate([200, 100, 200]); // أقوى كل 100
-      } else {
-        navigator.vibrate(200);
-      }
-    }
-
-    // اهتزاز بصري
     counterElement.classList.add("shake");
 
     setTimeout(() => {
@@ -384,9 +387,13 @@ countBtn.addEventListener("click", () => {
     }, 400);
   }
 
-  // رسالة مميزة كل 100
+  // 🔸 كل 100 → فيبريشن موبايل + رسالة احتفال
   if (count % 100 === 0) {
     showMessage(`🎉 ما شاء الله! وصلت ${count} تسبيحة كاملة! 🎉`);
+
+    if (navigator.vibrate) {
+      navigator.vibrate([300, 150, 300]);
+    }
   }
 });
 
