@@ -285,32 +285,26 @@ let count = 0;
 let clickTimes = [];
 const maxRatePerSecond = 3; // الحد الأعلى للضغط في ثانية واحدة
 
-/* ===============================
-   ✅ تحميل البيانات من LocalStorage
-=================================*/
+// ===============================
+// تحميل البيانات من LocalStorage
+// ===============================
 if (localStorage.getItem("count")) {
   count = parseInt(localStorage.getItem("count"));
   counterElement.innerText = count;
 }
+if (localStorage.getItem("tasbeeh")) tasbeehSelect.value = localStorage.getItem("tasbeeh");
+if (localStorage.getItem("name")) nameInput.value = localStorage.getItem("name");
 
-if (localStorage.getItem("tasbeeh")) {
-  tasbeehSelect.value = localStorage.getItem("tasbeeh");
-}
-
-if (localStorage.getItem("name")) {
-  nameInput.value = localStorage.getItem("name");
-}
-
-/* ===============================
-   ✅ حفظ الاسم تلقائيًا
-=================================*/
+// ===============================
+// حفظ الاسم تلقائيًا
+// ===============================
 nameInput.addEventListener("input", () => {
   localStorage.setItem("name", nameInput.value.trim());
 });
 
-/* ===============================
-   ✅ الفضائل
-=================================*/
+// ===============================
+// الفضائل
+// ===============================
 const virtues = {
   "سبحان الله وبحمده، سبحان الله العظيم": "ثِقيلتان في الميزان، حبيبتان إلى الرحمن.",
   "الحمد لله": "تملأ الميزان.",
@@ -326,68 +320,35 @@ tasbeehSelect.addEventListener("change", () => {
   localStorage.setItem("tasbeeh", selected);
 });
 
-/* ===============================
-   ✅ رسالة تشجيع ديناميك
-=================================*/
-function getEncouragementMessage(currentCount) {
-  const phrases = [
-    "ما شاء الله",
-    "أحسنت",
-    "استمر",
-    "تبارك الله",
-    "زادك الله حرصًا",
-    "كتب الله أجرك",
-    "نور الله قلبك",
-  ];
-  const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
-  return `${randomPhrase}! وصلت ${currentCount} تسبيحة 🌸`;
-}
-
-/* ===============================
-   ✅ زر التسبيح مع مراقبة السرعة
-=================================*/
+// ===============================
+// زر التسبيح مع مراقبة السرعة
+// ===============================
 countBtn.addEventListener("click", () => {
   const name = nameInput.value.trim();
-  if (!name) {
-    alert("من فضلك اكتب اسمك أولاً");
-    return;
-  }
+  if (!name) { alert("من فضلك اكتب اسمك أولاً"); return; }
 
-  // تسجيل الضغط
   const now = Date.now();
   clickTimes.push(now);
   clickTimes = clickTimes.filter(t => now - t <= 1000); // آخر ثانية
-
-  if (clickTimes.length > maxRatePerSecond) {
-    showPopup("هدي شويه 😅، هتكسب متقلقش!");
-  }
+  if (clickTimes.length > maxRatePerSecond) { showPopup("هدي شويه 😅، هتكسب متقلقش!"); }
 
   count++;
   counterElement.innerText = count;
   localStorage.setItem("count", count);
 
-  // كل 10 → رسالة + اهتزاز بصري
   if (count % 10 === 0) {
-    showMessage(getEncouragementMessage(count));
     counterElement.classList.add("shake");
     setTimeout(() => counterElement.classList.remove("shake"), 400);
   }
 
-  // كل 100 → رسالة احتفال + اهتزاز موبايل
-  if (count % 100 === 0) {
-    showMessage(`🎉 ما شاء الله! وصلت ${count} تسبيحة كاملة! 🎉`);
-    if (navigator.vibrate) navigator.vibrate([300, 150, 300]);
-  }
-
-  // حفظ وقت بداية الجلسة لأول ضغطة
   if (!localStorage.getItem("sessionStart")) {
     localStorage.setItem("sessionStart", new Date().toISOString());
   }
 });
 
-/* ===============================
-   ✅ زر التصفير
-=================================*/
+// ===============================
+// زر التصفير
+// ===============================
 resetBtn.addEventListener("click", () => {
   count = 0;
   counterElement.innerText = count;
@@ -395,20 +356,14 @@ resetBtn.addEventListener("click", () => {
   localStorage.removeItem("sessionStart");
 });
 
-/* ===============================
-   ✅ زر إنهاء التسبيح
-=================================*/
+// ===============================
+// زر إنهاء التسبيح
+// ===============================
 finishBtn.addEventListener("click", () => {
   const name = nameInput.value.trim();
   const selectedTasbeeh = tasbeehSelect.value;
-  if (!name || !selectedTasbeeh) {
-    alert("من فضلك اكتب اسمك واختر الذكر");
-    return;
-  }
-  if (count === 0) {
-    alert("لم تقم بأي تسبيح بعد");
-    return;
-  }
+  if (!name || !selectedTasbeeh) { alert("من فضلك اكتب اسمك واختر الذكر"); return; }
+  if (count === 0) { alert("لم تقم بأي تسبيح بعد"); return; }
 
   const loader = document.createElement("div");
   loader.innerText = "جاري حفظ البيانات...";
@@ -423,44 +378,97 @@ finishBtn.addEventListener("click", () => {
   loader.style.zIndex = "9999";
   document.body.appendChild(loader);
 
+  // حساب الوقت، المدة، المعدل، والحالة
+  const startTimeStr = localStorage.getItem("sessionStart") || new Date().toISOString();
+  const startTime = new Date(startTimeStr);
+  const endTime = new Date();
+  const durationSec = (endTime - startTime)/1000;
+  const durationStr = formatDuration(durationSec);
+  const rate = (count / durationSec).toFixed(2);
+
+  let status = "✅ صالح";
+  if (durationSec <= 0) status = "❌ خطأ في الوقت";
+  if (rate > 3) status = "❌ سرعة غير منطقية";
+  if (durationSec < 5 && count > 50) status = "❌ غش واضح";
+
+  // إنشاء الفورم وإضافة جميع الحقول
   const form = document.createElement("form");
   form.method = "POST";
-  form.action = "https://script.google.com/macros/s/AKfycbwrnZ7CUnJdziqZ5UCKBQBOECq2DXQdyKZ15Uh3e3r_mt2P-pl3nrVsQciP5V3JJd_e/exec"; // حط رابط سكريبت جوجل شيت
+  form.action = "https://script.google.com/macros/s/AKfycbwrnZ7CUnJdziqZ5UCKBQBOECq2DXQdyKZ15Uh3e3r_mt2P-pl3nrVsQciP5V3JJd_e/exec";
   form.target = "hidden_iframe";
 
-  const inputName = document.createElement("input");
-  inputName.name = "name";
-  inputName.value = name;
+  const fields = [
+    {name:"name", value:name},
+    {name:"count", value:count},
+    {name:"startTime", value:startTime.toISOString()},
+    {name:"endTime", value:endTime.toISOString()},
+    {name:"duration", value:durationStr},
+    {name:"rate", value:rate},
+    {name:"status", value:status}
+  ];
 
-  const inputCount = document.createElement("input");
-  inputCount.name = "count";
-  inputCount.value = count;
-
-  const inputStart = document.createElement("input");
-  inputStart.name = "startTime";
-  inputStart.value = localStorage.getItem("sessionStart") || new Date().toISOString();
-
-  form.appendChild(inputName);
-  form.appendChild(inputCount);
-  form.appendChild(inputStart);
+  fields.forEach(f => {
+    const input = document.createElement("input");
+    input.type = "hidden";
+    input.name = f.name;
+    input.value = f.value;
+    form.appendChild(input);
+  });
 
   document.body.appendChild(form);
   form.submit();
   document.body.removeChild(form);
 
+  // إعادة ضبط الجلسة
+  count = 0;
+  counterElement.innerText = count;
+  localStorage.removeItem("count");
+  localStorage.removeItem("sessionStart");
   setTimeout(() => {
     loader.remove();
-    showMessage(`تم إضافة ${count} تسبيحات إلى رصيدك 🌸`);
-    count = 0;
-    counterElement.innerText = count;
-    localStorage.removeItem("count");
-    localStorage.removeItem("sessionStart");
-  }, 1500);
+    showMessage(`تم إضافة ${fields[1].value} تسبيحات إلى رصيدك 🌸`);
+  }, 500);
 });
 
-/* ===============================
-   ✅ رسالة متحركة
-=================================*/
+// ===============================
+// تحويل الثواني إلى HH:MM:SS
+// ===============================
+function formatDuration(sec) {
+  const h = Math.floor(sec/3600);
+  const m = Math.floor((sec%3600)/60);
+  const s = Math.floor(sec%60);
+  return `${h}h:${m}m:${s}s`;
+}
+
+// ===============================
+// popup لطيف
+// ===============================
+function showPopup(msg) {
+  const rect = countBtn.getBoundingClientRect();
+  const div = document.createElement("div");
+  div.innerText = msg;
+  div.style.position = "fixed";
+  div.style.top = `${rect.top}px`;
+  div.style.left = `${rect.left}px`;
+  div.style.width = `${rect.width}px`;
+  div.style.height = `${rect.height}px`;
+  div.style.background = "#facc15";
+  div.style.color = "#000";
+  div.style.display = "flex";
+  div.style.alignItems = "center";
+  div.style.justifyContent = "center";
+  div.style.borderRadius = "15px";
+  div.style.fontWeight = "bold";
+  div.style.fontSize = "16px";
+  div.style.zIndex = "9999";
+  div.style.boxShadow = "0 4px 10px rgba(0,0,0,0.3)";
+  document.body.appendChild(div);
+  setTimeout(()=>div.remove(), 3000);
+}
+
+// ===============================
+// رسالة متحركة
+// ===============================
 function showMessage(msg) {
   const div = document.createElement("div");
   div.innerText = msg;
@@ -475,36 +483,4 @@ function showMessage(msg) {
   div.style.zIndex = "9999";
   document.body.appendChild(div);
   setTimeout(() => div.remove(), 2000);
-}
-
-/* ===============================
-   ✅ pop-up لطيف للسرعة
-=================================*/
-function showPopup(msg) {
-  const rect = countBtn.getBoundingClientRect(); // ناخد موقع وحجم الزرار
-  const div = document.createElement("div");
-  div.innerText = msg;
-  
-  // حجم ومكان مطابق للزرار
-  div.style.position = "fixed";
-  div.style.top = `${rect.top}px`;
-  div.style.left = `${rect.left}px`;
-  div.style.width = `${rect.width}px`;
-  div.style.height = `${rect.height}px`;
-  
-  // تنسيقات
-  div.style.background = "#facc15";
-  div.style.color = "#000";
-  div.style.display = "flex";
-  div.style.alignItems = "center";
-  div.style.justifyContent = "center";
-  div.style.borderRadius = "15px";
-  div.style.fontWeight = "bold";
-  div.style.fontSize = "16px";
-  div.style.zIndex = "9999";
-  div.style.boxShadow = "0 4px 10px rgba(0,0,0,0.3)";
-  
-  document.body.appendChild(div);
-  
-  setTimeout(() => div.remove(), 3000);
 }
