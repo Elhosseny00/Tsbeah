@@ -481,19 +481,30 @@ function showMessage(msg) {
    ✅ pop-up لطيف للسرعة
 =================================*/
 function showPopup(msg) {
+  const rect = countBtn.getBoundingClientRect(); // ناخد موقع وحجم الزرار
   const div = document.createElement("div");
   div.innerText = msg;
+  
+  // حجم ومكان مطابق للزرار
   div.style.position = "fixed";
-  div.style.bottom = "20%";
-  div.style.left = "50%";
-  div.style.transform = "translateX(-50%)";
+  div.style.top = `${rect.top}px`;
+  div.style.left = `${rect.left}px`;
+  div.style.width = `${rect.width}px`;
+  div.style.height = `${rect.height}px`;
+  
+  // تنسيقات
   div.style.background = "#facc15";
   div.style.color = "#000";
-  div.style.padding = "15px 25px";
+  div.style.display = "flex";
+  div.style.alignItems = "center";
+  div.style.justifyContent = "center";
   div.style.borderRadius = "15px";
   div.style.fontWeight = "bold";
+  div.style.fontSize = "16px";
   div.style.zIndex = "9999";
   div.style.boxShadow = "0 4px 10px rgba(0,0,0,0.3)";
+  
   document.body.appendChild(div);
+  
   setTimeout(() => div.remove(), 3000);
 }
