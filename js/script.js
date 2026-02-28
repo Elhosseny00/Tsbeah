@@ -99,15 +99,6 @@ countBtn.addEventListener("click", () => {
 });
 
 // ===============================
-// زر التصفير
-// ===============================
-resetBtn.addEventListener("click", () => {
-  count = 0;
-  counterElement.innerText = count;
-  localStorage.removeItem("count");
-  localStorage.removeItem("sessionStart");
-  speedWarningCount = 0;
-});
 
 // ===============================
 // زر إنهاء التسبيح
