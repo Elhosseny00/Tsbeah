@@ -1,209 +1,142 @@
-/* ===== Reset ===== */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
-}
 body {
   font-family: "Cairo", sans-serif;
-  background: linear-gradient(135deg, #0f172a, #1e3a8a, #2563eb);
   background-image: url("../beautiful-serene-mosque-night-blessed-month-ramadan-illuminated-generative-ai.jpg");
   background-position: center;
   background-size: cover;
-  background-color: black;
-  min-height: 100vh;
+  color: #fff;
   display: flex;
   justify-content: center;
   align-items: center;
+  min-height: 100vh;
   padding: 20px;
-  color: #fff;
 }
 
 .container {
   width: 100%;
   max-width: 450px;
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(15px);
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
   border-radius: 25px;
   padding: 30px;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
   text-align: center;
-
-}
-/* ===== Logo ===== */
-.logo-container {
-  margin-bottom: 20px;
-  text-align: center;
+  position: relative;
 }
 
 .logo-container img {
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
 }
 
 h1 {
-  font-size: 22px;
-  line-height: 1.9;
-  margin-bottom: 25px;
-  color: #f1f5f9;
+  margin: 20px 0;
+  font-size: 20px;
   font-weight: bold;
 }
+
 .form-group {
   margin-bottom: 15px;
   text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
-label {
-  display: block;
-  margin-bottom: 6px;
-  font-weight: 600;
-  font-size: 14px;
-}
-input,
-select {
-  width: 100%;
-  padding: 10px;
-  border-radius: 12px;
+
+input, select {
+  padding: 12px 15px;          /* زيادة الحشو الداخلي */
+  border-radius: 15px;         /* حواف مستديرة أكثر نعومة */
   border: none;
   outline: none;
-  font-size: 14px;
-  background: rgba(255, 255, 255, 0.9);
-  color: #0f172a;
+  font-size: 15px;
   font-weight: 600;
-  cursor: pointer;
+  color: #0f172a;
   transition: all 0.3s ease;
+  cursor: text;
 }
+
+input::placeholder {
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+input:focus, select:focus {
+  background: linear-gradient(145deg, #dbeafe, #bfdbfe); /* تغيير لون عند التركيز */
+  box-shadow: 0 0 10px #3b82f6, inset 0 0 5px rgba(0,0,0,0.05);
+  transform: scale(1.02);       /* تأثير تكبير بسيط عند التركيز */
+}
+
 select {
-  appearance: none;
-  background-image: url("data:image/svg+xml;utf8,<svg fill='%230f172a' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  appearance: none;              /* إزالة الشكل الافتراضي */
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2210%22%20height%3D%227%22%20viewBox%3D%220%200%2010%207%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cpath%20d%3D%22M0%200l5%207%205-7H0z%22%20fill%3D%22%236b7280%22/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: left 12px center;
-  background-size: 18px;
-}
-input:focus,
-select:focus {
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.3);
-  border: 2px solid #38bdf8;
+  background-position: right 12px center;
+  background-size: 12px 12px;
+  padding-right: 35px;           /* مساحة للسهم */
+  cursor: pointer;
 }
 
-#virtueBox {
-  font-weight: bold;
-
-  min-height: 60px;
-  margin: 10px 0 20px;
-  padding: 14px;
-  border-radius: 18px;
-background-color: #3b82f6;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: white;
-  font-size: 14px;
-  line-height: 1.8;
-  backdrop-filter: blur(10px);
-  transition: all 0.4s ease;
-}
 #counter {
-  font-size: 60px;
-  font-weight: 700;
+  font-size: 50px;
   margin: 20px 0;
   color: #fff;
-  text-shadow: 0 0 20px rgba(56, 189, 248, 0.6);
+  text-shadow: 0 0 15px rgba(56,189,248,0.6);
 }
 
 button {
-  padding: 10px 18px;
-  border: none;
+  padding: 10px 20px;
   border-radius: 15px;
+  border: none;
   cursor: pointer;
-  font-size: 14px;
-  font-weight: bold;
   font-weight: 600;
   margin: 5px;
-  transition: all 0.3s ease;
 }
-#countBtn {
-  background: #22c55e;
-  color: #fff;
-}
-#countBtn:hover {
-  background: #16a34a;
-  transform: scale(1.07);
-}
+
 #finishBtn {
   background: #3b82f6;
   color: #fff;
 }
+
 #finishBtn:hover {
   background: #2563eb;
-  transform: scale(1.07);
-}
-#resetBtn {
-  background: #ef4444;
-  color: #fff;
-}
-#resetBtn:hover {
-  background: #dc2626;
-  transform: scale(1.07);
 }
 
-/* الرسائل */
-.message-box {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0.5);
-  background: rgba(59, 130, 246, 0.9);
-  color: #fff;
-  padding: 20px 30px;
-  border-radius: 20px;
-  font-size: 18px;
-  font-weight: 700;
-  z-index: 1000;
-  opacity: 0;
-  transition: all 0.5s ease;
+.tasbeeh-container {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  margin: 15px auto;
 }
 
-/* Loader */
+.tasbeeh-bead {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 9px;
+  cursor: pointer;
+  color: #fff;
+  user-select: none;
+  transition: all 0.3s ease;
+  position: absolute;
+}
+
+.tasbeeh-bead.active {
+  background: #22c55e;
+  box-shadow: 0 0 8px #22c55e;
+}
+
 .loader {
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(59, 130, 246, 0.9);
-  color: #fff;
-  padding: 20px 30px;
-  border-radius: 15px;
-  font-size: 18px;
-  font-weight: 700;
-  z-index: 9999;
-  opacity: 0;
-  transition: 0.3s;
-  display: none;
+  top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  background:rgba(59,130,246,0.9);
+  color:#fff;
+  padding:20px 30px;
+  border-radius:20px;
+  z-index:9999;
+  display:none;
 }
-.loader.show {
-  display: block;
-  opacity: 1;
-}
-
-@media (max-width: 480px) {
-  #counter {
-    font-size: 48px;
-  }
-  button {
-    width: 100%;
-    margin-top: 8px;
-  }
-}
-@keyframes shake {
-  0% { transform: translateX(0); }
-  20% { transform: translateX(-6px); }
-  40% { transform: translateX(6px); }
-  60% { transform: translateX(-6px); }
-  80% { transform: translateX(6px); }
-  100% { transform: translateX(0); }
-}
-
-.shake {
-  animation: shake 0.4s ease;
-}
+.loader.show { display:block; }

@@ -1,152 +1,147 @@
 const counterElement = document.getElementById("counter");
-const countBtn = document.getElementById("countBtn");
 const finishBtn = document.getElementById("finishBtn");
-const resetBtn = document.getElementById("resetBtn");
 const nameInput = document.getElementById("name");
 const tasbeehSelect = document.getElementById("tasbeeh");
-const virtueBox = document.getElementById("virtueBox");
+const tasbeehContainer = document.getElementById("tasbeehContainer");
 
-let count = 0;
+let count = parseInt(localStorage.getItem("count")) || 0;
+let currentBead = parseInt(localStorage.getItem("currentBead")) || 0;
 let clickTimes = [];
-let speedWarningCount = 0; // عداد التحذيرات المتتالية
+let speedWarningCount = 0;
 const maxRatePerSecond = 3;
+const beadsCount = 33;
+const fixedText = "الله";
 
-// ===============================
-// تحميل البيانات من LocalStorage
-// ===============================
-if (localStorage.getItem("count")) {
-  count = parseInt(localStorage.getItem("count"));
-  counterElement.innerText = count;
-}
-if (localStorage.getItem("tasbeeh")) tasbeehSelect.value = localStorage.getItem("tasbeeh");
-if (localStorage.getItem("name")) nameInput.value = localStorage.getItem("name");
-
-// ===============================
-// حفظ الاسم تلقائيًا
-// ===============================
-nameInput.addEventListener("input", () => {
-  localStorage.setItem("name", nameInput.value.trim());
-});
-
-// ===============================
-// الفضائل
-// ===============================
-const virtues = {
-  "سبحان الله وبحمده، سبحان الله العظيم": "ثِقيلتان في الميزان، حبيبتان إلى الرحمن.",
-  "الحمد لله": "تملأ الميزان.",
-  "الله أكبر": "أحب الكلام إلى الله.",
-  "لا إله إلا الله": "أفضل الذكر.",
-  "استغفر الله": "سبب لمغفرة الذنوب وتفريج الهموم.",
-  "اللهم صلِّ على محمد": "من صلى عليّ صلاة صلى الله عليه بها عشرًا.",
-};
-tasbeehSelect.addEventListener("change", () => {
-  const selected = tasbeehSelect.value;
-  virtueBox.innerText = virtues[selected] || "";
-  localStorage.setItem("tasbeeh", selected);
-});
-
-// ===============================
-// رسائل تشجيعية
-// ===============================
+// رسائل تشجيعية عشوائية
 const encouragementMessages = [
-  "ما شاء الله عليك 🌟 كمل!",
-  "الله ينور عليك 🤍",
-  "ثابت ومركز 💪",
-  "ذكر الله يرفعك درجات 📈",
-  "قلبك منور بالذكر ✨",
-  "استمر يا بطل 🏆",
+  "ممتاز! استمر على هذا",
+  "تسبيح رائع! بارك الله فيك",
+  "واصل يا بطل! 🌟",
+  "تسبيحة اليوم اكتملت بنجاح",
+  "أحسنت! قلبك مليء بالذكر",
+  "الله أكبر! Keep going",
+  "يا سلام! لقد أتممت 33 ذكرًا",
+  "تسبيح جميل ومثمر",
+  "استمر ولا تتوقف",
+  "مبروك! روحك مرتاحة الآن"
 ];
 
-// ===============================
-// زر التسبيح
-// ===============================
-countBtn.addEventListener("click", () => {
-  const name = nameInput.value.trim();
-  if (!name) { alert("من فضلك اكتب اسمك أولاً"); return; }
+// تحديث العدّاد عند التحميل
+counterElement.innerText = count;
+
+// استرجاع اسم المسبح
+if (localStorage.getItem("name")) nameInput.value = localStorage.getItem("name");
+
+// استرجاع اختيار الذكر
+if (localStorage.getItem("tasbeeh")) tasbeehSelect.value = localStorage.getItem("tasbeeh");
+
+// تعيين وقت بداية الجلسة لو مش موجود
+if (!localStorage.getItem("sessionStart"))
+  localStorage.setItem("sessionStart", new Date().toISOString());
+
+// حفظ الاسم عند تغييره
+nameInput.addEventListener("input", () =>
+  localStorage.setItem("name", nameInput.value.trim())
+);
+
+// حفظ اختيار الذكر عند تغييره
+tasbeehSelect.addEventListener("change", () => {
+  localStorage.setItem("tasbeeh", tasbeehSelect.value);
+  createBeads();
+});
+
+// إنشاء الحبات
+function createBeads() {
+  tasbeehContainer.innerHTML = "";
+  const radius = 140;
+  const center = 140;
+
+  for (let i = 0; i < beadsCount; i++) {
+    const bead = document.createElement("div");
+    bead.classList.add("tasbeeh-bead");
+
+    // النص داخل الحبة
+    bead.innerText = fixedText;
+    bead.innerText = fixedText;
+    bead.style.fontWeight = "bold";  // صح، العنصر نفسه
+    bead.style.display = "flex";
+    bead.style.justifyContent = "center";
+    bead.style.alignItems = "center";
+
+    const angle = (i / beadsCount) * 2 * Math.PI;
+    bead.style.left = `${center + radius * Math.cos(angle)}px`;
+    bead.style.top = `${center + radius * Math.sin(angle)}px`;
+
+    if (i < currentBead) bead.classList.add("active");
+
+    bead.addEventListener("click", (e) => {
+      e.stopPropagation();
+      handleTasbeeh();
+    });
+
+    tasbeehContainer.appendChild(bead);
+  }
+}
+createBeads();
+
+// التعامل مع ضغط الحبة
+function handleTasbeeh() {
+  if (!nameInput.value.trim()) {
+    alert("اكتب اسمك أولاً");
+    return;
+  }
 
   const now = Date.now();
   clickTimes.push(now);
   clickTimes = clickTimes.filter(t => now - t <= 1000);
 
-  // ==========================
-  // تحقق صارم: ظهور التحذير المتتالي
-  // ==========================
   if (clickTimes.length > maxRatePerSecond) {
-    showSpeedPopup("هدي شويه 😅، هتكسب متقلقش!");
+    showFullScreenPopup('هتبوظ التاتش براحه ياعم😒');
     speedWarningCount++;
-  } else {
-    speedWarningCount = 0; // إذا الضغط طبيعي نرجع صفر
+    return;
+  } else speedWarningCount = 0;
+
+  const beads = document.querySelectorAll(".tasbeeh-bead");
+  if (currentBead < beadsCount) {
+    beads[currentBead].classList.add("active");
+    currentBead++;
+    localStorage.setItem("currentBead", currentBead);
+    count++;
+    counterElement.innerText = count;
+    localStorage.setItem("count", count);
   }
 
-  count++;
-  counterElement.innerText = count;
-  localStorage.setItem("count", count);
+  if (currentBead === beadsCount) {
+    // اهتزاز الهاتف
+    if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
 
-  // اهتزاز العداد كل 10
-  if (count % 10 === 0) {
-    counterElement.classList.add("shake");
-    setTimeout(() => counterElement.classList.remove("shake"), 400);
-  }
-
-  // تشجيع كل 20
-  if (count % 20 === 0) {
+    // رسالة تشجيعية عشوائية
     const randomMsg = encouragementMessages[Math.floor(Math.random() * encouragementMessages.length)];
     showEncouragementPopup(randomMsg);
-    if (navigator.vibrate) navigator.vibrate(200);
+
+    currentBead = 0;
+    localStorage.setItem("currentBead", currentBead);
+    beads.forEach(b => b.classList.remove("active"));
   }
+}
 
-  if (!localStorage.getItem("sessionStart")) localStorage.setItem("sessionStart", new Date().toISOString());
-});
-
-// ===============================
-
-// ===============================
 // زر إنهاء التسبيح
-// ===============================
 finishBtn.addEventListener("click", () => {
-  const name = nameInput.value.trim();
-  const selectedTasbeeh = tasbeehSelect.value;
-  if (!name || !selectedTasbeeh) { alert("من فضلك اكتب اسمك واختر الذكر"); return; }
+  if (!nameInput.value.trim()) { alert("اكتب اسمك"); return; }
   if (count === 0) { alert("لم تقم بأي تسبيح بعد"); return; }
 
   const loader = document.createElement("div");
   loader.innerText = "جاري حفظ البيانات...";
-  loader.style.cssText = `
-    position:fixed;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    background:rgba(59,130,246,0.9);
-    color:#fff;
-    padding:20px 30px;
-    border-radius:20px;
-    z-index:9999;
-  `;
+  loader.classList.add("loader", "show");
   document.body.appendChild(loader);
 
-  const startTimeStr = localStorage.getItem("sessionStart") || new Date().toISOString();
-  const startTime = new Date(startTimeStr);
+  const startTime = new Date(localStorage.getItem("sessionStart"));
   const endTime = new Date();
   const durationSec = (endTime - startTime)/1000;
   const durationStr = formatDuration(durationSec);
-  const rate = count / durationSec;
+  const rate = count/durationSec;
 
-  // ===============================
-  // التحقق النهائي الصارم + Anti-Cheat
-  // ===============================
-  let status = "✅ صالح";
-
-  // إذا التحذير ظهر 5 مرات متتالية → غش
-  if (speedWarningCount >= 5) {
-    status = "❌ غش واضح";
-    speedWarningCount = 0;
-  }
-
-  if (durationSec <= 0 || isNaN(durationSec)) status = "❌ خطأ في الوقت";
-  else if (rate > 4) status = "❌ سرعة مستحيلة";
-  else if (durationSec < 10 && count > 40) status = "❌ تسبيح غير منطقي";
-  else if (durationSec < 60 && count > 200) status = "❌ رقم مبالغ فيه";
-  else if (durationSec < 30 && count > 120) status = "❌ غش واضح";
+  let status = speedWarningCount >= 5 ? "❌ غش واضح" : "✅ صالح";
 
   const form = document.createElement("form");
   form.method = "POST";
@@ -154,18 +149,20 @@ finishBtn.addEventListener("click", () => {
   form.target = "hidden_iframe";
 
   const fields = [
-    {name:"name", value:name},
-    {name:"count", value:count},
-    {name:"startTime", value:startTime.toISOString()},
-    {name:"endTime", value:endTime.toISOString()},
-    {name:"duration", value:durationStr},
-    {name:"rate", value:rate.toFixed(2)},
-    {name:"status", value:status}
+    { name: "name", value: nameInput.value },
+    { name: "count", value: count },
+    { name: "startTime", value: startTime.toISOString() },
+    { name: "endTime", value: endTime.toISOString() },
+    { name: "duration", value: durationStr },
+    { name: "rate", value: rate.toFixed(2) },
+    { name: "status", value: status }
   ];
 
   fields.forEach(f => {
     const input = document.createElement("input");
-    input.type="hidden"; input.name=f.name; input.value=f.value;
+    input.type = "hidden";
+    input.name = f.name;
+    input.value = f.value;
     form.appendChild(input);
   });
 
@@ -173,17 +170,18 @@ finishBtn.addEventListener("click", () => {
   form.submit();
   document.body.removeChild(form);
 
+  // إعادة تعيين كل شيء
   count = 0;
+  currentBead = 0;
   counterElement.innerText = count;
   localStorage.removeItem("count");
+  localStorage.removeItem("currentBead");
   localStorage.removeItem("sessionStart");
+  createBeads();
 
-  setTimeout(()=>{ loader.remove(); showMessage(`تم إضافة ${fields[1].value} تسبيحات إلى رصيدك 🌸`) }, 500);
+  setTimeout(() => loader.remove(), 500);
 });
 
-// ===============================
-// تنسيق الوقت
-// ===============================
 function formatDuration(sec) {
   const h = Math.floor(sec/3600);
   const m = Math.floor((sec%3600)/60);
@@ -191,80 +189,41 @@ function formatDuration(sec) {
   return `${h}h:${m}m:${s}s`;
 }
 
-// ===============================
-// Popup منع السرعة (فوق الزرار)
-// ===============================
-function showSpeedPopup(msg){
-  const rect = countBtn.getBoundingClientRect();
+function showFullScreenPopup(msg) {
   const div = document.createElement("div");
   div.innerText = msg;
   div.style.cssText = `
-    position:fixed;
-    top:${rect.top}px;
-    left:${rect.left}px;
-    width:${rect.width}px;
-    height:${rect.height}px;
-    background:#facc15;
-    color:#000;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    border-radius:15px;
-    font-weight:bold;
-    font-size:16px;
-    z-index:9999;
-    box-shadow:0 4px 10px rgba(0,0,0,0.3);
+    position:fixed; top:0; left:0;
+    width:100%; height:100%;
+    background:rgb(10, 10, 10);
+    color:#fff; display:flex;
+    justify-content:center; align-items:center;
+    font-size:32px; font-weight:bold; z-index:9999;
   `;
   document.body.appendChild(div);
-  setTimeout(()=>div.remove(),2000);
+  setTimeout(() => div.remove(), 1500);
 }
 
-// ===============================
-// Popup تشجيعي (نص الشاشة)
-// ===============================
-function showEncouragementPopup(msg){
+function showEncouragementPopup(msg) {
   const div = document.createElement("div");
   div.innerText = msg;
   div.style.cssText = `
-    position:fixed;
-    top:50%;
-    left:50%;
+    position:fixed; top:50%; left:50%;
     transform:translate(-50%,-50%) scale(0.8);
     background:linear-gradient(135deg,#22c55e,#16a34a);
-    color:#fff;
-    padding:25px 40px;
-    border-radius:25px;
-    font-weight:bold;
-    font-size:20px;
-    text-align:center;
-    z-index:9999;
-    box-shadow:0 10px 30px rgba(0,0,0,0.3);
-    opacity:0;
-    transition:all 0.3s ease;
+    color:#fff; padding:20px 35px;
+    border-radius:25px; font-weight:bold; font-size:20px;
+    text-align:center; z-index:9999;
+    opacity:0; transition:all 0.3s ease;
   `;
   document.body.appendChild(div);
-  setTimeout(()=>{ div.style.opacity="1"; div.style.transform="translate(-50%,-50%) scale(1)"; },50);
-  setTimeout(()=>{ div.style.opacity="0"; div.style.transform="translate(-50%,-50%) scale(0.8)";
-  setTimeout(()=>div.remove(),300)},2500);
-}
-
-// ===============================
-// رسالة إنهاء
-// ===============================
-function showMessage(msg){
-  const div = document.createElement("div");
-  div.innerText=msg;
-  div.style.cssText=`
-    position:fixed;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    background:rgba(59,130,246,0.9);
-    color:#fff;
-    padding:20px 30px;
-    border-radius:20px;
-    z-index:9999;
-  `;
-  document.body.appendChild(div);
-  setTimeout(()=>div.remove(),2000);
+  setTimeout(() => {
+    div.style.opacity = "1";
+    div.style.transform = "translate(-50%,-50%) scale(1)";
+  }, 50);
+  setTimeout(() => {
+    div.style.opacity = "0";
+    div.style.transform = "translate(-50%,-50%) scale(0.8)";
+    setTimeout(() => div.remove(), 300);
+  }, 2500);
 }
