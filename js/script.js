@@ -28,15 +28,14 @@ const encouragementMessages = [
 // تحديث العدّاد عند التحميل
 counterElement.innerText = count;
 
-// استرجاع اسم المسبح
+// استرجاع الاسم والذكر من localStorage
 if (localStorage.getItem("name")) nameInput.value = localStorage.getItem("name");
-
-// استرجاع اختيار الذكر
 if (localStorage.getItem("tasbeeh")) tasbeehSelect.value = localStorage.getItem("tasbeeh");
 
-// تعيين وقت بداية الجلسة لو مش موجود
-if (!localStorage.getItem("sessionStart"))
+// تعيين وقت بداية الجلسة لو مش موجود أو تم إنهاء 33 ذكر
+if (!localStorage.getItem("sessionStart")) {
   localStorage.setItem("sessionStart", new Date().toISOString());
+}
 
 // حفظ الاسم عند تغييره
 nameInput.addEventListener("input", () =>
@@ -52,7 +51,7 @@ tasbeehSelect.addEventListener("change", () => {
 // إنشاء الحبات
 function createBeads() {
   tasbeehContainer.innerHTML = "";
-  const radius = 140;
+  const radius = 150;
   const center = 140;
 
   for (let i = 0; i < beadsCount; i++) {
@@ -61,13 +60,13 @@ function createBeads() {
 
     // النص داخل الحبة
     bead.innerText = fixedText;
-    bead.innerText = fixedText;
-    bead.style.fontWeight = "bold";  // صح، العنصر نفسه
+    bead.style.fontWeight = "bold";
     bead.style.display = "flex";
     bead.style.justifyContent = "center";
     bead.style.alignItems = "center";
 
     const angle = (i / beadsCount) * 2 * Math.PI;
+    bead.style.position = "absolute";
     bead.style.left = `${center + radius * Math.cos(angle)}px`;
     bead.style.top = `${center + radius * Math.sin(angle)}px`;
 
@@ -88,6 +87,11 @@ function handleTasbeeh() {
   if (!nameInput.value.trim()) {
     alert("اكتب اسمك أولاً");
     return;
+  }
+
+  // تعيين وقت بداية الجلسة لو مش موجود
+  if (!localStorage.getItem("sessionStart")) {
+    localStorage.setItem("sessionStart", new Date().toISOString());
   }
 
   const now = Date.now();
@@ -121,6 +125,9 @@ function handleTasbeeh() {
     currentBead = 0;
     localStorage.setItem("currentBead", currentBead);
     beads.forEach(b => b.classList.remove("active"));
+
+    // إعادة تعيين بداية الجلسة بعد إنهاء 33 ذكر
+    localStorage.setItem("sessionStart", new Date().toISOString());
   }
 }
 
@@ -194,7 +201,7 @@ function showFullScreenPopup(msg) {
   div.style.cssText = `
     position:fixed; top:0; left:0;
     width:100%; height:100%;
-    background:rgb(10, 10, 10);
+    background:rgba(0, 0, 0, 0.94);
     color:#fff; display:flex;
     justify-content:center; align-items:center;
     font-size:32px; font-weight:bold; z-index:9999;
