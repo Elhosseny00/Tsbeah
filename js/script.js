@@ -306,6 +306,7 @@ align-items:center;
 font-size:32px;
 font-weight:bold;
 z-index:9999;
+Text-align:center;
 `;
 
 document.body.appendChild(div);
