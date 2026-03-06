@@ -61,8 +61,8 @@ function createBeads() {
   tasbeehContainer.innerHTML = "";
   tasbeehContainer.appendChild(counter);
 
-  const radius = 175;
-  const center = 200;
+  const radius = 120;
+  const center = 100;
 
   for (let i = 0; i < beadsCount; i++) {
 
