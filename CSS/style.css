@@ -77,20 +77,20 @@ select {
   cursor: pointer;
 }
 
-#counter {
-  font-size: 50px;
-  margin: 20px 0;
-  color: #fff;
-  text-shadow: 0 0 15px rgba(56,189,248,0.6);
-}
+
 
 button {
-  padding: 10px 20px;
-  border-radius: 15px;
+  padding: 15px 100px;
+  border-radius: 25px;
   border: none;
   cursor: pointer;
-  font-weight: 600;
+  font-weight: bold;
   margin: 5px;
+  font-size: 22px;
+  -webkit-border-radius: 25px;
+  -moz-border-radius: 25px;
+  -ms-border-radius: 25px;
+  -o-border-radius: 25px;
 }
 
 #finishBtn {
@@ -102,18 +102,32 @@ button {
   background: #2563eb;
 }
 
-.tasbeeh-container {
-  position: relative;
-  width: 300px;
-  height: 300px;
+.container .tasbeeh-container {
+  width: 400px;
+  height: 400px;
   margin: 15px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-top: 20px;
+  margin-bottom: 50px;
+}
+.container .tasbeeh-container .counter {
+  font-size: 80px;
+  color: #fbf7f4;
+  font-weight: bold;
+  text-shadow: 0 0 15px #685d54;
+  pointer-events: none;
+margin-left: 30px;
+
 }
 
 .tasbeeh-bead {
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.2);
+  background: #fbf7f4bb;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -121,13 +135,18 @@ button {
   cursor: pointer;
   color: #fff;
   user-select: none;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   position: absolute;
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  -ms-transition: all 0.2s ease;
+  -o-transition: all 0.2s ease;
 }
 
 .tasbeeh-bead.active {
-  background: #22c55e;
-  box-shadow: 0 0 8px #22c55e;
+  background: #685d54;
+border: 2px solid #fff;
+
 }
 
 .loader {
