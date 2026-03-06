@@ -23,7 +23,22 @@ const encouragementMessages = [
 "استمر ولا تتوقف",
 "مبروك! روحك مرتاحة الآن"
 ];
+const speedMessages = [
+  "هتبوظ التاتش براحه 😒",
+  "السبحة مش سباق  😂",
+  "براحه شوية 😅",
+  "استهدى بالله وخدها بالراحة",
+  "مش كده يا عم الحج",
+  "الذكر بالراحة أجمل ❤️",
+  "مش قلنا نسبح براحه؟ 😅",
+  "هوا انت هندي ولا إيه؟😏",
+  "يا صديقي دي 200 جنيه مش تلاجه 😂",
+  "متبقاش رخم بقا 😒",
+  "سبحان الله وبالحال دي هتخرب السبحة 😂",
+  "ياعم خد 200 جنيه وابعد عن السبحة 😾",
+  ];
 
+  let speedMessageIndex = 0;
 counterElement.innerText = count;
 
 // استرجاع الاسم
@@ -105,16 +120,21 @@ clickTimes.push(now);
 
 clickTimes=clickTimes.filter(t=>now-t<=1000);
 
-if(clickTimes.length>maxRatePerSecond){
+if(clickTimes.length > maxRatePerSecond){
 
-showFullScreenPopup("هتبوظ التاتش براحه 😒");
+  showFullScreenPopup(speedMessages[speedMessageIndex]);
 
-speedWarningCount++;
+  speedMessageIndex++;
 
-return;
+  if(speedMessageIndex >= speedMessages.length){
+    speedMessageIndex = 0;
+  }
+
+  speedWarningCount++;
+
+  return;
 
 }
-
 const beads=document.querySelectorAll(".tasbeeh-bead");
 
 if(currentBead<beadsCount){
@@ -150,7 +170,9 @@ beads.forEach(b=>b.classList.remove("active"));
 }
 
 }
+const tasbeehBtn = document.getElementById("tasbeehBtn");
 
+tasbeehBtn.addEventListener("click", handleTasbeeh);
 // زر إنهاء التسبيح
 finishBtn.addEventListener("click",()=>{
 
@@ -288,7 +310,7 @@ z-index:9999;
 
 document.body.appendChild(div);
 
-setTimeout(()=>div.remove(),1500);
+setTimeout(()=>div.remove(),1700);
 
 }
 

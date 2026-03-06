@@ -78,9 +78,13 @@ select {
 }
 
 
-
+.buttons{
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
 button {
-  padding: 15px 80px;
+  padding: 15px 50px;
   border-radius: 25px;
   border: none;
   cursor: pointer;
@@ -100,6 +104,20 @@ button {
 
 #finishBtn:hover {
   background: #2563eb;
+}
+#tasbeehBtn{
+  background:linear-gradient(135deg,#22c55e,#16a34a);
+  color:#fff;
+  font-size:22px;
+  font-weight:bold;
+  border:none;
+  cursor:pointer;
+  box-shadow:0 0 20px rgba(0,0,0,0.3);
+  transition:0.2s;
+}
+
+#tasbeehBtn:active{
+  transform:scale(.95);
 }
 
 .container .tasbeeh-container {
