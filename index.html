@@ -1,52 +1,52 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>صنائع المعروف </title>
-  <link rel="stylesheet" href="CSS/style.css" />
-</head>
-<body>
-  <iframe name="hidden_iframe" style="display:none"></iframe>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>صنائع المعروف</title>
+    <link rel="stylesheet" href="CSS/style.css" />
+  </head>
+  <body>
+    <iframe name="hidden_iframe" style="display: none"></iframe>
 
-  <div class="container">
-    <div class="logo-container">
-      <img src="logo.jpeg" alt="Logo" />
-    </div>
+    <div class="container">
+      <div class="logo-container">
+        <img src="logo.jpeg" alt="Logo" />
+      </div>
 
-    <h1>﴿ الَّذِينَ آمَنُوا وَتَطْمَئِنُّ قُلُوبُهُم بِذِكْرِ اللَّهِ ﴾</h1>
+      <h1>﴿ الَّذِينَ آمَنُوا وَتَطْمَئِنُّ قُلُوبُهُم بِذِكْرِ اللَّهِ ﴾</h1>
 
-    <div class="form-group">
-      <label>اسم المسبح</label>
-      <input type="text" id="name" placeholder="ادخل اسمك الثلاثي" />
-    </div>
+      <div class="form-group">
+        <label>اسم المسبح</label>
+        <input type="text" id="name" placeholder="ادخل اسمك الثلاثي" />
+      </div>
 
-    <div class="form-group">
-      <label>اختر كلمة التسبيح</label>
-      <select id="tasbeeh">
-        <option value="">اختر الذكر</option>
+      <div class="form-group">
+        <label>اختر كلمة التسبيح</label>
+        <select id="tasbeeh">
+          <!-- <option value="">اختر الذكر</option>
         <option value="اللهم إنك عفو كريم تحب العفو فاعف عنا">اللهم إنك عفو كريم تحب العفو فاعف عنا</option>
         <option value="سبحان الله وبحمده، سبحان الله العظيم">سبحان الله وبحمده، سبحان الله العظيم</option>
         <option value="الحمد لله">الحمد لله</option>
         <option value="الله أكبر">الله أكبر</option>
         <option value="لا إله إلا الله">لا إله إلا الله</option>
-        <option value="استغفر الله">استغفر الله</option>
-        <option value="اللهم صلِّ على محمد ﷺ">اللهم صلِّ على محمد ﷺ</option>
-      </select>
+        <option value="استغفر الله">استغفر الله</option> -->
+          <option value="اللهم صلِّي على محمد ﷺ">اللهم صلِّي على محمد ﷺ</option>
+        </select>
+      </div>
+
+      <div id="tasbeehContainer" class="tasbeeh-container">
+        <h2 class="counter" id="counter">0</h2>
+      </div>
+
+      <div class="buttons">
+        <button id="tasbeehBtn">تسبيح</button>
+        <button id="finishBtn">إنهاء التسبيح</button>
+      </div>
     </div>
 
-    <div id="tasbeehContainer" class="tasbeeh-container">
-      <h2 class="counter" id="counter">0</h2>
-    </div>
+    <div id="loader" class="loader">جاري حفظ البيانات...</div>
 
-    <div class="buttons">
-      <button id="tasbeehBtn">تسبيح</button>
-      <button id="finishBtn">إنهاء التسبيح</button>
-    </div>
-  </div>
-
-  <div id="loader" class="loader">جاري حفظ البيانات...</div>
-
-  <script src="js/script.js"></script>
-</body>
+    <script src="js/script.js"></script>
+  </body>
 </html>
